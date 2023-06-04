@@ -10,11 +10,9 @@ import { languagesRouter } from "./routes/languages.routes";
 // import { sqlConnect } from "./databases/sql-db";
 import { playerRouter } from "./routes/player.routes";
 import { teamRouter } from "./routes/team.routes";
-// import { swaggerOptions } from "./swagger-options";
-// import swaggerJsDoc from "swagger-jsdoc";
+import { swaggerOptions } from "./swagger-options";
+import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUiExpress from "swagger-ui-express";
-
-import swaggerJson from "../swagger.json";
 
 // Conexión a la BBDD
 // const mongoDatabase = await mongoConnect();
@@ -33,9 +31,8 @@ app.use(
 );
 
 // Swagger
-// const specs = swaggerJsDoc(swaggerOptions);
-const specs = swaggerJson;
-app.use("/api-docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs, { explorer: true }));
+const specs = swaggerJsDoc(swaggerOptions);
+app.use("/api-docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 // Rutas
 const router = express.Router();
@@ -47,8 +44,8 @@ router.get("/", (req: Request, res: Response) => {
   //   <p>Estamos usando TypeORM con la BBDD: ${datasource.options.database as string}</p>
   // `);
   res.send(`
-      <h3>Esta es la RAIZ de nuestra API.</h3>
-  `);
+    <h3>Esta es la RAIZ de nuestra API.</h3>
+`);
 });
 router.get("*", (req: Request, res: Response) => {
   res.status(404).send("Lo sentimos :( No hemos encontrado la página solicitada.");
@@ -61,11 +58,9 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-// Middleware de conexión a la BBDD
+// Middlewares de aplicación, por ejemplo middleware de logs en consola
 app.use(async (req: Request, res: Response, next: NextFunction) => {
-  console.log("Conectando a la BBDD...");
   await mongoConnect();
-  console.log("Conectado a la BBDD!!");
   next();
 });
 
@@ -104,4 +99,5 @@ app.listen(PORT, () => {
   console.log(`Server levantado en el puerto ${PORT}`);
 });
 
+// Algunos productos como vercel necesitan que exportemos el servidor
 module.exports = app;

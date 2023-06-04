@@ -6,12 +6,12 @@
  */
 
 import express, { type NextFunction, type Response, type Request } from "express";
-// import fs from "fs";
-// import multer from "multer";
+import fs from "fs";
+import multer from "multer";
 
 // Modelos
 import { Brand } from "../models/mongo/Brand";
-// const upload = multer({ dest: "public" });
+const upload = multer({ dest: "public" });
 
 export const brandRouter = express.Router();
 
@@ -269,29 +269,29 @@ brandRouter.put("/:id", async (req: Request, res: Response, next: NextFunction) 
  *       404:
  *         description: The brand was not found
  */
-// brandRouter.post("/logo-upload", upload.single("logo"), async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     // Renombrado de la imagen
-//     const originalname = req.file?.originalname as string;
-//     const path = req.file?.path as string;
-//     const newPath = `${path}_${originalname}`;
-//     fs.renameSync(path, newPath);
+brandRouter.post("/logo-upload", upload.single("logo"), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    // Renombrado de la imagen
+    const originalname = req.file?.originalname as string;
+    const path = req.file?.path as string;
+    const newPath = `${path}_${originalname}`;
+    fs.renameSync(path, newPath);
 
-//     // Busqueda de la marca
-//     const brandId = req.body.brandId;
-//     const brand = await Brand.findById(brandId);
+    // Busqueda de la marca
+    const brandId = req.body.brandId;
+    const brand = await Brand.findById(brandId);
 
-//     if (brand) {
-//       brand.logoImage = newPath;
-//       await brand.save();
-//       res.json(brand);
+    if (brand) {
+      brand.logoImage = newPath;
+      await brand.save();
+      res.json(brand);
 
-//       console.log("Marca modificada correctamente!");
-//     } else {
-//       fs.unlinkSync(newPath);
-//       res.status(404).send("Marca no encontrada");
-//     }
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+      console.log("Marca modificada correctamente!");
+    } else {
+      fs.unlinkSync(newPath);
+      res.status(404).send("Marca no encontrada");
+    }
+  } catch (error) {
+    next(error);
+  }
+});
