@@ -19,14 +19,12 @@ export const swaggerOptions: SwaggerOptions = {
     },
     server: [
       {
-        url: "https://node-s15-swagger-and-testing.vercel.app"
+        url: "http://localhost:3000"
       }
     ]
   },
   apis: [
     "./src/models/*/*.ts",
     "./src/routes/*.ts",
-    "./src/models/*/*.js",
-    "./src/routes/*.js"
   ]
 };
