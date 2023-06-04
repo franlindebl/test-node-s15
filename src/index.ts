@@ -100,4 +100,4 @@ const main = async (): Promise<void> => {
   });
 };
 
-void main();
+module.exports = main;
