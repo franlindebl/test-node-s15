@@ -61,6 +61,14 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
+// Middleware de conexión a la BBDD
+app.use(async (req: Request, res: Response, next: NextFunction) => {
+  console.log("Conectando a la BBDD...");
+  await mongoConnect();
+  console.log("Conectado a la BBDD!!");
+  next();
+});
+
 // Usamos las rutas
 app.use("/user", userRouter);
 app.use("/car", carRouter);
@@ -70,12 +78,6 @@ app.use("/player", playerRouter);
 app.use("/team", teamRouter);
 app.use("/public", express.static("public"));
 app.use("/", router);
-
-app.use(async (req: Request, res: Response, next: NextFunction) => {
-  await mongoConnect();
-  console.log("Conectado a la BBDD");
-  next();
-});
 
 // Middleware de gestión de errores
 app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
