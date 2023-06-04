@@ -1,0 +1,639 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Node S15",
+    "version": "1.0.0",
+    "description": "This is a simple CRUD API",
+    "license": {
+      "name": "MIT",
+      "url": "http://mit.com"
+    },
+    "contact": {
+      "name": "Fran Linde",
+      "url": "https://github.com/franlidebl",
+      "email": "fran@example.com"
+    }
+  },
+  "server": [
+    {
+      "url": "https://node-s15-swagger-and-testing.vercel.app"
+    }
+  ],
+  "paths": {
+    "/brand": {
+      "get": {
+        "summary": "Lists all the brands",
+        "tags": [
+          "Brand"
+        ],
+        "responses": {
+          "200": {
+            "description": "The list of the brands",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Brand"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new brand",
+        "tags": [
+          "Brand"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Brand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The brand was created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Brand"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is incorrect or missing"
+          }
+        }
+      }
+    },
+    "/brand/{id}": {
+      "get": {
+        "summary": "Get a brand by ID",
+        "tags": [
+          "Brand"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The brand ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The brand info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Brand"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a brand",
+        "tags": [
+          "Brand"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The brand ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The brand was deleted successfully"
+          },
+          "404": {
+            "description": "The brand was not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a brand",
+        "tags": [
+          "Brand"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Brand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The brand was updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Brand"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is incorrect or missing"
+          },
+          "404": {
+            "description": "The brand was not found"
+          }
+        }
+      }
+    },
+    "/brand/name/{name}": {
+      "get": {
+        "summary": "Get a brand by name",
+        "tags": [
+          "Brand"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The brand name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The brand info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Brand"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The brand was not found"
+          }
+        }
+      }
+    },
+    "/brand/logo-upload": {
+      "post": {
+        "summary": "Upload a logo for a brand",
+        "tags": [
+          "Brand"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "logo",
+            "type": "file",
+            "description": "The file to upload."
+          },
+          {
+            "in": "formData",
+            "name": "brandId",
+            "type": "string",
+            "description": "The id of the brand"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The logo was uploaded successfully"
+          },
+          "404": {
+            "description": "The brand was not found"
+          }
+        }
+      }
+    },
+    "/car": {
+      "get": {
+        "summary": "Lists all the cars",
+        "tags": [
+          "Car"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The number of items to return"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The list of the cars",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Car"
+                      }
+                    },
+                    "totalItems": {
+                      "type": "integer"
+                    },
+                    "totalPages": {
+                      "type": "integer"
+                    },
+                    "currentPage": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid page or limit parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new car",
+        "tags": [
+          "Car"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Car"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The car was created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing parameters or validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/car/{id}": {
+      "get": {
+        "summary": "Get a car by ID",
+        "tags": [
+          "Car"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The car ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The car info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Car not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a car by ID",
+        "tags": [
+          "Car"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The car ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The car was successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The car was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a car by ID",
+        "tags": [
+          "Car"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The car ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Car"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The car was successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Some parameters are missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The car was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/car/brand/{brand}": {
+      "get": {
+        "summary": "Get cars by brand",
+        "tags": [
+          "Car"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "brand",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The car brand"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of cars of the specified brand",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Car"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cars not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Brand": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the brand (sample Ford)"
+          },
+          "creationYear": {
+            "type": "number",
+            "description": "Year when brand was created (sample 1990)"
+          },
+          "country": {
+            "type": "string",
+            "description": "Country of this Brand (sample SPAIN)"
+          },
+          "logoImage": {
+            "type": "string",
+            "description": "Logo of this brand (sample http://balbblabla.com/image.jpg)"
+          }
+        }
+      },
+      "Car": {
+        "type": "object",
+        "required": [
+          "brand",
+          "model",
+          "year",
+          "price"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The auto-generated id of the car"
+          },
+          "brand": {
+            "type": "string",
+            "description": "The brand of the car"
+          },
+          "model": {
+            "type": "string",
+            "description": "The model of the car"
+          },
+          "plate": {
+            "type": "string",
+            "description": "The plate of the car"
+          },
+          "power": {
+            "type": "number",
+            "description": "The horsepower of this car"
+          },
+          "owner": {
+            "type": "string",
+            "description": "The owner ID of this car"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "The error message"
+          }
+        }
+      },
+      "Pagination": {
+        "type": "object",
+        "properties": {
+          "totalItems": {
+            "type": "number",
+            "description": "Total items on this endpoint"
+          },
+          "totalPages": {
+            "type": "number",
+            "description": "Number of pages for this pagination"
+          },
+          "currentPage": {
+            "type": "number",
+            "description": "Current page showed"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Brand",
+      "description": "The brands managing API"
+    },
+    {
+      "name": "Car",
+      "description": "The cars managing API"
+    }
+  ]
+}
